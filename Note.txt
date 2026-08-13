@@ -1,0 +1,264 @@
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=coderpak_coachingappapi
+DB_USERNAME=coderpak_coachingappapi 
+DB_PASSWORD=coderpak_coachingappapi 
+
+
+APIs:
+https://coachingappapi.arslanishaq.com/api/visit-counter/?page_url=home
+
+<div class="eye-counter">
+   <div class="eye-container" id="eyeContainer">
+       <div class="eye-outer">
+           <div class="eye-inner">
+               <div class="pupil"></div>
+           </div>
+       </div>
+       <div class="counter-number" id="visitorCount">0</div>
+   </div>
+</div>
+
+    <style>
+        .eye-counter {
+            display: flex;
+            align-items: center;
+            margin-right: 15px;
+        }
+
+        .eye-container {
+            position: relative;
+            width: 80px;
+            height: 50px;
+            cursor: pointer;
+        }
+
+        .eye-outer {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, 
+                #f0f0f0 0%, 
+                #d4d4d4 30%, 
+                #8a8a8a 70%, 
+                #4a4a4a 100%);
+            border-radius: 60% / 60%;
+            box-shadow: 
+                0 0 15px rgba(0,0,0,0.3),
+                inset 0 0 10px rgba(255,255,255,0.5);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        /* Blood vessel effect */
+        .eye-outer::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle, transparent 60%, rgba(150,50,50,0.05) 60.5%) 50% 50%/80% 80%,
+                linear-gradient(100deg, rgba(200,100,100,0.1) 0%, transparent 20%, transparent 80%, rgba(200,100,100,0.1) 100%);
+            border-radius: 50%;
+        }
+
+        .dark-theme .eye-outer {
+            background: radial-gradient(ellipse at center, 
+                #4a4a4a 0%, 
+                #2a2a2a 30%, 
+                #1a1a1a 70%, 
+                #0a0a0a 100%);
+        }
+
+        .eye-inner {
+            position: absolute;
+            width: 55%;
+            height: 55%;
+            background: radial-gradient(circle at center, 
+                #3a1d0d 0%, 
+                #1a0a00 50%, 
+                #0a0000 100%);
+            border-radius: 50%;
+            top: 22.5%;
+            left: 22.5%;
+            box-shadow: 
+                inset 0 0 15px rgba(0,0,0,0.4),
+                0 0 5px rgba(255,255,255,0.3);
+            transition: all 0.2s ease;
+        }
+
+        /* Iris pattern */
+        .eye-inner::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle, transparent 65%, rgba(0,0,0,0.7) 65.5%),
+                repeating-radial-gradient(circle at 30% 30%, 
+                    rgba(150, 50, 200, 0.3) 0%, 
+                    transparent 1%, 
+                    transparent 5%);
+            border-radius: 50%;
+        }
+
+        .dark-theme .eye-inner {
+            background: radial-gradient(circle at center, 
+                #1a0a00 0%, 
+                #0a0000 50%, 
+                #000 100%);
+        }
+
+        .pupil {
+            position: absolute;
+            width: 40%;
+            height: 40%;
+            background: #000;
+            border-radius: 50%;
+            top: 30%;
+            left: 30%;
+            box-shadow: 
+                0 0 15px rgba(0,0,0,0.7),
+                inset 0 0 10px rgba(100, 0, 150, 0.5);
+            transition: all 0.1s ease;
+        }
+
+        /* Eye shine */
+        .pupil::after {
+            content: '';
+            position: absolute;
+            width: 20%;
+            height: 20%;
+            background: rgba(255,255,255,0.9);
+            border-radius: 50%;
+            top: 20%;
+            left: 20%;
+            filter: blur(0.5px);
+        }
+
+        .counter-number {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Arial', sans-serif;
+            font-weight: bold;
+            font-size: 1rem;
+            color: white;
+            text-shadow: 0 0 5px rgba(0,0,0,0.9);
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        /* Original Smooth Blink Animation */
+        @keyframes eye-blink {
+            0%, 100% { 
+                transform: scaleY(1);
+                border-radius: 60% / 60%;
+            }
+            20%, 80% {
+                border-radius: 60% / 10%;
+            }
+            50% { 
+                transform: scaleY(0.05);
+                border-radius: 60% / 5%;
+            }
+        }
+
+        .eye-container.active .eye-outer {
+            animation: eye-blink 0.4s ease-in-out;
+        }
+
+        /* Follow cursor effect */
+        .eye-container:hover .eye-inner {
+            transform: translate(
+                calc(var(--mouse-x) * 15px - 7.5px), 
+                calc(var(--mouse-y) * 10px - 5px)
+            );
+        }
+
+        .eye-container:hover .pupil {
+            transform: translate(
+                calc(var(--mouse-x) * 10px - 5px), 
+                calc(var(--mouse-y) * 7px - 3.5px)
+            );
+        }
+
+        /* Random eye movement when not hovering */
+        @keyframes random-eye-movement {
+            0% { transform: translate(0, 0); }
+            25% { transform: translate(2px, 1px); }
+            50% { transform: translate(-1px, 2px); }
+            75% { transform: translate(1px, -1px); }
+            100% { transform: translate(0, 0); }
+        }
+
+        .eye-inner.idle-movement {
+            animation: random-eye-movement 8s infinite ease-in-out;
+        }
+
+        .pupil.idle-movement {
+            animation: random-eye-movement 5s infinite ease-in-out;
+        }
+
+        /* Micro-movements when idle */
+        @keyframes eye-idle {
+            0%, 100% { transform: translate(0, 0); }
+            25% { transform: translate(1px, 0.5px); }
+            50% { transform: translate(0, 1px); }
+            75% { transform: translate(-0.5px, 0.5px); }
+        }
+
+        .eye-outer {
+            animation: eye-idle 8s infinite ease-in-out;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 767px) {
+            .eye-container {
+                width: 70px;
+                height: 45px;
+            }
+            
+            .counter-number {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', async () => {
+      const pageIdentifier = "home"; // Change this to match your page
+      const counterElement = document.getElementById('visitorCount');
+      
+      try {
+          // Show loading state
+          counterElement.textContent = '...';
+          
+          // Debug: Show the API URL being called
+          const apiUrl = `https://coachingappapi.arslanishaq.com/api/visit-counter?page_url=${pageIdentifier}`;
+          // alert(`Attempting to call API:\n${apiUrl}`);
+          
+          // Call your API
+          const response = await fetch(apiUrl);
+          
+          // // Debug: Show raw response
+          // alert(`API Response Status: ${response.status}\n${response.statusText}`);
+          
+          if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          
+          // Get and display the count
+          const count = await response.text();
+          // alert(`Received count value: ${count}`);
+          counterElement.textContent = count;
+          
+      } catch (error) {
+          // alert(`Error occurred:\n${error.message}`);
+          counterElement.textContent = '0';
+      }
+  });
+</script>
