@@ -93,27 +93,55 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 showMoreLink.textContent = 'Show more';
             }
+            const carousel = document.querySelector('.testimonial__container');
+            if (carousel && carousel.swiper) {
+                carousel.swiper.update();
+            }
         });
     });
 
-    // Dynamically add script tags
-    const scripts = [
-        "./packages/project/js/jquery-3.3.1.min.js",
-        "./packages/project/js/lightbox.min.js",
-        "./packages/project/js/owl.carousel.min.js",
-        "./packages/project/js/jquery.mixitup.js",
-        "./packages/project/js/wow.min.js",
-        "./packages/project/js/main2.js",
-        "./packages/assets/js/swiper-bundle.min.js",
-        "./packages/assets/js/main.js",
-        "https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js",
-        "https://cdn.startbootstrap.com/sb-forms-latest.js"
-    ];
+    // projects.js already loads Swiper. Wait for it, then init AFTER slides exist.
+    // Loading main.js here a second time used to race: Swiper started on an empty
+    // wrapper, so left/right browsing never attached to these cards.
+    function startTestimonialCarousel(attempt) {
+        const container = document.querySelector('.testimonial__container');
+        if (!container || container.swiper) {
+            return;
+        }
+        if (typeof Swiper === 'undefined') {
+            if ((attempt || 0) < 40) {
+                setTimeout(() => startTestimonialCarousel((attempt || 0) + 1), 50);
+            }
+            return;
+        }
 
-    scripts.forEach(src => {
-        const script = document.createElement('script');
-        script.src = src;
-        document.body.appendChild(script);
-    });
+        new Swiper(container, {
+            loop: true,
+            grabCursor: true,
+            spaceBetween: 48,
+            observer: true,
+            observeParents: true,
+            navigation: {
+                nextEl: '.testimonial__container .swiper-button-next',
+                prevEl: '.testimonial__container .swiper-button-prev',
+            },
+            pagination: {
+                el: '.swiper-pagination-testimonial',
+                clickable: true,
+                dynamicBullets: true,
+            },
+            breakpoints: {
+                568: {
+                    slidesPerView: 2,
+                },
+            },
+            autoplay: {
+                delay: 10000,
+                disableOnInteraction: false,
+            },
+        });
+    }
+
+    startTestimonialCarousel(0);
 
 });

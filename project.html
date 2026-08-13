@@ -221,7 +221,7 @@
                 <div class="section__subtitle" style="margin-bottom: 3rem;">
                     <a href="javascript:void(0);" class="home__scroll-button button--flex" style="text-align: center;">
                         <i class="uil uil-mouse-alt home__scroll-mouse"></i>
-                        <span class="home__scroll-name">Drag left or right to view more testimonials</span>
+                        <span class="home__scroll-name">Use the arrows or drag left and right to view more testimonials</span>
                         <i class="uil uil-arrow-down home__scroll-arrow"></i>
                     </a>
                 </div>
@@ -229,7 +229,12 @@
                     <div class="swiper-wrapper">
                         <!-- Testimonials will be dynamically added here -->
                     </div>
-                    <!-- Add pagination -->
+                    <div class="swiper-button-next">
+                        <i class="uil uil-angle-right-b swiper-portfolio-icon"></i>
+                    </div>
+                    <div class="swiper-button-prev">
+                        <i class="uil uil-angle-left-b swiper-portfolio-icon"></i>
+                    </div>
                     <div class="swiper-pagination swiper-pagination-testimonial"></div>
                 </div>
             </section>
@@ -323,6 +328,27 @@
                 font-size: 1rem;
                 text-align: left;
 
+            }
+
+            /* Keep arrows inside the carousel so overflow:hidden does not clip them */
+            .testimonial__container {
+                padding: 0 2.5rem 3rem;
+            }
+
+            .testimonial__container .swiper-button-next,
+            .testimonial__container .swiper-button-prev {
+                top: 40%;
+                margin-top: 0;
+                width: 2.25rem;
+                height: 2.25rem;
+            }
+
+            .testimonial__container .swiper-button-prev {
+                left: 0;
+            }
+
+            .testimonial__container .swiper-button-next {
+                right: 0;
             }
 
         </style>

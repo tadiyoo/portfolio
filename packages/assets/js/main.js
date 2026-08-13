@@ -179,31 +179,45 @@ let swiperPortfolio = new Swiper(".portfolio__container", {
 });
 
 /*==================== TESTIMONIAL ====================*/
-let swiperTestimonial = new Swiper(".testimonial__container", {
-  loop: true,
-  grabCursor: true,
-  spaceBetween: 48,
+// On the project page, testimonials.js injects slides then starts this carousel.
+// Skip here if that already happened, or if the wrapper is still empty.
+const testimonialContainer = document.querySelector(".testimonial__container");
+if (
+  testimonialContainer &&
+  !testimonialContainer.swiper &&
+  testimonialContainer.querySelector(".swiper-slide")
+) {
+  let swiperTestimonial = new Swiper(".testimonial__container", {
+    loop: true,
+    grabCursor: true,
+    spaceBetween: 48,
 
-  pagination: {
-    el: ".swiper-pagination",
-    clickable: true,
-    dynamicBullets: true,
-  },
-
-  breakpoints: {
-    568: {
-      slidesPerView: 2,
+    navigation: {
+      nextEl: ".testimonial__container .swiper-button-next",
+      prevEl: ".testimonial__container .swiper-button-prev",
     },
-  },
 
-  autoplay: {
-    delay: 10000, // Delay in milliseconds (e.g., 3000ms = 3 seconds)
-    disableOnInteraction: false, // Autoplay will not be disabled after interactions
-  },
+    pagination: {
+      el: ".swiper-pagination-testimonial",
+      clickable: true,
+      dynamicBullets: true,
+    },
 
-  /* mousewheel: true,
-  keyboard: true, */
-});
+    breakpoints: {
+      568: {
+        slidesPerView: 2,
+      },
+    },
+
+    autoplay: {
+      delay: 10000, // Delay in milliseconds (e.g., 3000ms = 3 seconds)
+      disableOnInteraction: false, // Autoplay will not be disabled after interactions
+    },
+
+    /* mousewheel: true,
+    keyboard: true, */
+  });
+}
 
 
 /*==================== SCROLL SECTIONS ACTIVE LINK ====================*/
